@@ -7,7 +7,7 @@ var FancyWebSocket = function (url)
     this.bind = function (event_name, callback) {
         callbacks[event_name] = callbacks[event_name] || [];
         callbacks[event_name].push(callback);
-        return this;// chainable
+        return this;
     };
 
     this.send = function (event_name, event_data) {
@@ -21,7 +21,6 @@ var FancyWebSocket = function (url)
         else
             this.conn = new WebSocket(url);
 
-        // dispatch to the right handlers
         this.conn.onmessage = function (evt) {
             dispatch('message', evt.data);
         };
@@ -41,7 +40,7 @@ var FancyWebSocket = function (url)
     var dispatch = function (event_name, message) {
         var chain = callbacks[event_name];
         if (typeof chain == 'undefined')
-            return; // no callbacks for this event
+            return;
         for (var i = 0; i < chain.length; i++) {
             chain[i](message)
         }
